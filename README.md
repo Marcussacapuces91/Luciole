@@ -1,4 +1,45 @@
 luciole
 =======
 
-Projet de luciole basée sur plusieurs projets dont une démo de @asthrolab
+Projet de luciole basé sur plusieurs projets dont une démo de <a href='https://twitter.com/asthrolab'>@asthrolab</a> rencontré à l'<a href='http://asthrolab.fr/2013/12/retour-sur-lopenbidouillecamp-2013-montreuil/'>OpenBidouilleCamp de Montreuil</a> (déc. 2013).
+
+Bibliographie
+-------------
+
+* http://asthrolab.fr/2013/12/asthrolab-a-lopenbidouillecamp-montreuil/
+* http://daviddarts.com/ledfirefly/
+
+Matériel
+--------
+
+Je pars sur un micro-controleur Atmel Tiny 13 ou supérieur suivant les approvisionnements (le Tiny13 est en fin de vie), une diode électroluminescente, une pile et... rien d'autre.
+
+<pre>
+
+    vcc             +-------+
+     |    |    |    |       |                             vcc
+  +--+----+----+----+--+  --+--                            |
+  |                    |  \   /  ~~>                    -------
+   ) AtTiny 13/../85   |   \ /   ~~>                     #####     Pile
+  |.                   |  --+--                            |      CR2023 (3V)
+  +--+----+----+----+--+    |                           -------  
+     |    |    |    |       |                            #####  
+                    +-------+                              |
+                   gnd                                    gnd
+</pre>
+
+Fonctions
+---------
+
+* Une variation lente de l'éclairage et de l'extinction de la led (comme dans la démo d'asthrolab) ;
+* Une période de scintillement aléatoire ;
+* Une très faible consommation électrique du contrôleur.
+* TODO : utiliser la diode en capteur de luminosité pour ne faire briller la led que la nuit.
+
+Pré-requis
+----------
+Comme je n'ai plus rien pour coder et flasher le microcontrôleur, je vais m'appuyer sur un arduino en mode ISP. Cela va me permettre d'utiliser :
+# l'IDE de l'Arduino pour saisir et compiler mon code ;
+# l'Arduino lui-même pour flasher le microcontroleur.
+
+
