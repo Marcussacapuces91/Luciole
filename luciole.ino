@@ -1,60 +1,91 @@
-/*
-  Luciole.ino
-@author Marc Sibert - Copyright 2013
-@licence Public Licence
- */
+/**
+ * Luciole.ino
+ * @author Marc Sibert - Copyright 2013
+ *@licence Public Licence
+ **/
  
 #include <avr/sleep.h> 
 #include <avr/wdt.h>
  
 
 /**
- * Produit un flash de la luciole, une rampe montée et une rampe descente.
+ * Produit un flash de la luciole, une rampe montée progressive et une rampe descente.
  * @warning Cette fonction utilise le timer à son compte et empêche l'utilisation des fonctions sleep.
- */
+ **/
 inline void flash() {
+  set_sleep_mode(SLEEP_MODE_IDLE);
+  PRR &= ~_BV(PRTIM0);  // activation des alim timer0
   
   OCR0A = 0;               // Valeur initiale du PWM
   TCNT0 = 0;               // clear counter
 
   TCCR0A = _BV(COM0A1) | _BV(COM0A0) | // Clear on compare & set on TOP
            _BV(WGM01) | _BV(WGM00);    // Mode 3 Fast PWM
-  TCCR0B = _BV(CS01); // | _BV(CS00);    // div 64 
+  TCCR0B = _BV(CS01);                  // no prescaling
 
 // PB0 en sortie  
   DDRB |= _BV(DDB0); // | _BV(DDB1); 
   
   while (OCR0A < 254) {
-    OCR0A += 2;
-    sleep_mode();
+    ++OCR0A;
+    for (byte i = 4; i > 0; --i) {
+      sleep_mode();
+    }
   }
   while (OCR0A > 0) {
-    OCR0A -= 1;
-    sleep_mode();
+    --OCR0A;
+    for (byte i = 8; i > 0; --i) {
+      sleep_mode();
+    }
   }
   
-  DDRB &= ~_BV(DDB0); // Port B0 en entrée.
-
+  TCCR0A = 0;  // On arr\u00eate tout !
+  
+  DDRB &= ~_BV(DDB0); // Port B0 en entr\u00e9e.
+  PRR |= _BV(PRTIM0);  // desactivation de l'alim timer0
 }
 
-void on(const int d) {
-  on();
-  delay(d);
-  off();
+/**
+ * Génère une attente aléatoire.
+ * Cette fonction met le contrôleur en veille POWER DOWN et utilise l'interruption du watchdog
+ * pour le réveiller au bout du temps de référence.
+ **/
+inline void wait() {
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+
+  do {
+// Activation du Watchdog
+    cli();
+    WDTCR = _BV(WDCE) | _BV(WDE);
+    WDTCR = _BV(WDCE) | _BV(WDE) | WDTO_1S;
+    MCUSR = 0;
+    WDTCR |= _BV(WDIF) | _BV(WDIE);
+    sei();
+
+    wdt_reset();
+// sleep until watchdog fire
+    sleep_mode();
+
+  } while (rand() > (RAND_MAX >> 4));
 }
 
-inline void on() {
-  PORTB |= _BV(PB4);
-  DDRB |= _BV(DDB4);
+/**
+ * Interruption lancé par le watchdog.
+ **/
+ISR(WDT_vect) {
+// Désactivation du Watchdog
+  cli();
+  wdt_disable();
+  WDTCR |= _BV(WDCE) | _BV(WDE);
+  WDTCR = 0x00;
+  sei();
 }
 
-inline void off() {
-  PORTB &= ~_BV(PB4);
-  DDRB &= ~_BV(DDB4);
-}
-
+/**
+ * Fonction d'initialisation du contrôleur.
+ * Elle configure les bases de temps suivant les besoins et désactive les fonctions inutilisées.
+ **/
 void setup() {
-  set_sleep_mode(SLEEP_MODE_IDLE);
 #ifdef __AVR_ATtiny13__
   cli();
   CLKPR = _BV(CLKPCE);  
@@ -62,38 +93,30 @@ void setup() {
   sei();
 #endif
 #ifdef __AVR_ATtiny85__
-// Mettre l'horloge en 128KHz interne avec lfuse=0xE4
-/*
-  cli();
-  CLKPR = _BV(CLKPCE); // CLKPCE: Clock Prescaler Change Enable
-  CLKPR = 0b0110;      //  CLKPS[3:0]: Clock Prescaler Select Bits 3 - 0 : pas plus de 8 en 128 kHz !!!
-  sei();
-*/
 #endif
+
+// Désactivation du Watchdog
+  cli();
+  wdt_disable();
+  WDTCR |= _BV(WDCE) | _BV(WDE);
+  WDTCR = 0x00;
+  sei();
+  
+// Reduc power analog
+  ADCSRA &= ~_BV(ADEN);  //  ADC switched off
+  ACSR = _BV(ACD);       // Analog Comparator Disable
+  DIDR0 = 0x3F;          // Digital Input Disable (toutes)
+
+// Reduc power by disabled clock signal (en dernier)
+  PRR = 0x0F;    
 }
 
+
+/**
+ * Fonction itérative du contrôleur.
+ * Elle alterne une séquence de d'éclairement de la led et une séquence d'attente infiniement.
+ **/
 void loop() {
   flash();
- 
-// Normal mode sans compare ==> TOV0
-#ifdef __AVR_ATtiny13__
-  TIMSK0 = _BV(TOIE0);  // ne garder que TOverflow et masquer les autres
-  GTCCR = _BV(PSR10);   // reset prescaler
-#endif
-#ifdef __AVR_ATtiny85__
-  TIMSK = _BV(TOIE0);   // ne garder que TOverflow et masquer les autres
-  GTCCR = _BV(PSR0);    // reset prescaler
-#endif
-
-  TCNT0 = 0;            // clear counter
-  TCCR0A = 0b00000000;  // Mode normal : un TOV à la fin du comptage
-  TCCR0B = _BV(CS02) | _BV(CS00);  // 101 : clkI/O / 1024 (From prescaler)
-
-
-  do {
-    sleep_mode();
-//    on(1);
-  } while (rand() > (RAND_MAX >> 3));
-  
-  
+  wait(); 
 }
