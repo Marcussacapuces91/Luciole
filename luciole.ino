@@ -39,9 +39,9 @@ inline void flash() {
     }
   }
   
-  TCCR0A = 0;  // On arr\u00eate tout !
+  TCCR0A = 0;  // On arrête le TIMER0 !
   
-  DDRB &= ~_BV(DDB0); // Port B0 en entr\u00e9e.
+  DDRB &= ~_BV(DDB0); // Port B0 en entrée.
   PRR |= _BV(PRTIM0);  // desactivation de l'alim timer0
 }
 
