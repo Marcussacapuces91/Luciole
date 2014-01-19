@@ -49,9 +49,9 @@ class Luciole {
       DIDR0 = 0x3F;          // Digital Input Disable (toutes)
     
 // Reduc power by disabled clock signal (en dernier)
-    #ifdef __AVR_ATtiny85__
+#ifdef __AVR_ATtiny85__
       PRR = 0x0F;    
-    #endif
+#endif
     }
 
 /**
