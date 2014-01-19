@@ -1,4 +1,4 @@
-luciole
+Luciole
 =======
 
 Projet de luciole basé sur plusieurs projets dont une démo de <a href='https://twitter.com/asthrolab'>@asthrolab</a> rencontré à l'<a href='http://asthrolab.fr/2013/12/retour-sur-lopenbidouillecamp-2013-montreuil/'>OpenBidouilleCamp de Montreuil</a> (déc. 2013).
@@ -15,9 +15,9 @@ Matériel
 Je pars sur un micro-controleur Atmel Tiny 13 ou supérieur suivant les approvisionnements (le Tiny13 est en fin de vie), une diode électroluminescente, une pile et... rien d'autre.
 
 <pre>
-             -+ -+
-             /| /|
-            /  /
+           .  .
+          /|\/|\  
+           |  |
     vcc   | \ |                               vcc
      +----+---+-----+                          |
      |    | / |     |                       -------
@@ -36,7 +36,7 @@ Fonctions
 
 - Une variation lente de l'éclairage et de l'extinction de la led (comme dans la démo d'asthrolab) ;
 - Une période de scintillement aléatoire ;
-- A améliorer : Une très faible consommation électrique du contrôleur.
+- Une très faible consommation électrique du contrôleur (en utilisant les fonctions de mise en sommeil) ;
 - A faire : Utiliser la diode en capteur de luminosité pour ne faire briller la led que la nuit.
 
 Pré-requis
