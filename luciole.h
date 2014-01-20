@@ -31,7 +31,7 @@ class Luciole {
 /// Temps de descente.
     static const unsigned DESCENTE = 12;
     
-// Probailité invert (1/p) d'arrêter l'attente chaque seconde.
+// Probabilité inverse (1/p) d'arrêter l'attente à chaque cycle d'une seconde.
     static const unsigned INV_PROBA = 16;
     
   public:
