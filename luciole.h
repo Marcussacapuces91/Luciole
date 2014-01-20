@@ -33,7 +33,7 @@ class Luciole {
     
 // Probailité invert (1/p) d'arrêter l'attente chaque seconde.
     static const unsigned INV_PROBA = 16;
-  
+    
   public:
 /**
  * Fonction d'initialisation du contrôleur ; elle doit être appelée par la fonction setup() du sketch Arduino.
