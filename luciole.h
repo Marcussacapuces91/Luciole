@@ -138,9 +138,38 @@ class Luciole {
       do {
         wdt_reset();
         sleep_mode();  // sleep until watchdog fire
-      } while (rand() > (RAND_MAX / INV_PROBA));
+      } while (rnd_xorshift_32() > (0xFFFF / INV_PROBA));
       wdt_disable();
     }
+    
+  private:
+
+/**
+ * Méthode produisant un nombre aléatoire dans [1..0xFFFF].
+ * Le triplet (A,B,C) doit être choisi avec soin pour obtenir une grande période.
+ * @return Un entier compris dans [1..0xFFFF].
+ * @link http://www.jstatsoft.org/v08/i14/paper 
+ * @link http://b2d-f9r.blogspot.fr/2010/08/16-bit-xorshift-rng-now-with-more.html
+ */
+template <int A, int B, int C>
+static uint16_t rnd_xorshift_32() {
+  static uint16_t x=1, y=1;
+  
+  const uint16_t t = (x ^ (x << A)); 
+  x = y; 
+  return y = (y ^ (y >> C)) ^ (t ^ (t >> B));
+}
+
+/**
+ * Cette méthode retourne un nombre aléatoire en utilisant le triplet (5,3,1).
+ * @return Un entier compris dans [1..0xFFFF].
+ */
+static uint16_t rnd_xorshift_32() {
+  return rnd_xorshift_32<5,3,1>();
+}
+
+
+  
 };
 
 #endif // __LUCIOLE_H__
