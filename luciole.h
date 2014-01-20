@@ -96,13 +96,13 @@ class Luciole {
       
       while (OCR0A < 254) {
         ++OCR0A;
-        for (byte i = MONTEE * 1000000 / F_CPU; i > 0; --i) {
+        for (byte i = MONTEE * F_CPU / 1000000; i > 0; --i) {
           sleep_mode();
         }
       }
       while (OCR0A > 0) {
         --OCR0A;
-        for (byte i = DESCENTE * 1000000 / F_CPU ; i > 0; --i) {
+        for (byte i = DESCENTE * F_CPU / 1000000 ; i > 0; --i) {
           sleep_mode();
         }
       }
