@@ -135,10 +135,18 @@ class Luciole {
 #endif
       sei();
       
+#if 0
       do {
         wdt_reset();
         sleep_mode();  // sleep until watchdog fire
       } while (rnd_xorshift_32() > (0xFFFF / INV_PROBA));
+#else
+      for (unsigned i = normal(30, 30); i > 0; --i) {
+        wdt_reset();
+        sleep_mode();
+      }
+#endif
+
       wdt_disable();
     }
     
@@ -151,22 +159,36 @@ class Luciole {
  * @link http://www.jstatsoft.org/v08/i14/paper 
  * @link http://b2d-f9r.blogspot.fr/2010/08/16-bit-xorshift-rng-now-with-more.html
  */
-template <int A, int B, int C>
-static uint16_t rnd_xorshift_32() {
-  static uint16_t x=1, y=1;
-  
-  const uint16_t t = (x ^ (x << A)); 
-  x = y; 
-  return y = (y ^ (y >> C)) ^ (t ^ (t >> B));
-}
+    template <int A, int B, int C>
+    static uint16_t rnd_xorshift_32() {
+      static uint16_t x=1, y=1;
+      
+      const uint16_t t = (x ^ (x << A)); 
+      x = y; 
+      return y = (y ^ (y >> C)) ^ (t ^ (t >> B));
+    }
 
 /**
  * Cette méthode retourne un nombre aléatoire en utilisant le triplet (5,3,1).
  * @return Un entier compris dans [1..0xFFFF].
  */
-static uint16_t rnd_xorshift_32() {
-  return rnd_xorshift_32<5,3,1>();
-}
+    static uint16_t rnd_xorshift_32() {
+      return rnd_xorshift_32<5,3,1>();
+    }
+    
+/**
+ * Méthode rendant un nombre aléatoire avec un distribution "normale".
+ * @return La valeur retournée est positive ou nulle.
+ * @link http://www.protonfish.com/random.shtml
+ */
+    static int normal(const int mean, const int dev) {
+      int i;
+      do {
+        i = (long(rnd_xorshift_32()) + long(rnd_xorshift_32()) + long(rnd_xorshift_32()) + long(rnd_xorshift_32())) * dev / 0x10000L - 2 * dev + mean;
+        
+      } while (i < 0);
+      return i;
+    }
 
 
   
