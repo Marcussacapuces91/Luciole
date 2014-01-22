@@ -141,7 +141,7 @@ class Luciole {
         sleep_mode();  // sleep until watchdog fire
       } while (rnd_xorshift_32() > (0xFFFF / INV_PROBA));
 #else
-      for (unsigned i = normal(30, 30); i > 0; --i) {
+      for (unsigned i = normal(30, 10); i > 0; --i) {
         wdt_reset();
         sleep_mode();
       }
