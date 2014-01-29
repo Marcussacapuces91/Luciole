@@ -135,18 +135,10 @@ class Luciole {
 #endif
       sei();
       
-#if 0
-      do {
-        wdt_reset();
-        sleep_mode();  // sleep until watchdog fire
-      } while (rnd_xorshift_32() > (0xFFFF / INV_PROBA));
-#else
       for (unsigned i = normal(30, 10); i > 0; --i) {
         wdt_reset();
         sleep_mode();
       }
-#endif
-
       wdt_disable();
     }
     
