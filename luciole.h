@@ -64,6 +64,7 @@ protected:
  */
   inline
   void flash() {
+    TCNT0 = 0; // Reset counter
     TCCR0B = _BV(CS00); // Full speed
     for (byte i = 0; i < 32; ++i) {
       OCR0A = pgm_read_byte(CIEL8 + i);
