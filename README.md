@@ -12,36 +12,35 @@ Bibliographie
 Matériel
 --------
 
-Je pars sur un micro-controleur Atmel Tiny 13 ou supérieur suivant les approvisionnements (le Tiny13 est en fin de vie), une diode électroluminescente, une pile et... rien d'autre.
+Je pars sur un micro-contrôleur Atmel ATtiny 13 ou supérieur (ATtiny 85)suivant les approvisionnements (le Tiny13 est en fin de vie), une diode électroluminescente, une pile et... rien d'autre.
 
 <pre>
-                                                 vcc
-                                                  |
-    vcc                                        -------
-     |              +-------+                   #####    Pile (3v)
-  +--+----+----+----+--+    |                     |     CR2023
-  |                    |  --+--                -------
-   ) AtTiny 13/../85   |   \ /  ---->           #####
-  |.                   |   -+-  ---->             |
-  +--+----+----+----+--+    |                    gnd    
-                    +-------+
-                   gnd
+                                                 
+    vcc                                          vcc
+     |              +-------+                     |
+  +--+----+----+----+--+    |                  -------
+  |                    |  --+--                 #####   Pile (3v)
+   ) AtTiny 13/../85   |   \ /  ---->             |     CR2023
+  |.                   |   -+-  ---->          -------
+  +--+----+----+----+--+    |                   #####
+                    +-------+                     |
+                   gnd                           gnd
 </pre>
 
 Fonctions
 ---------
 
-- Une variation lente de l'éclairage et de l'extinction de la led (comme dans la démo d'asthrolab) ;
+- Une variation lente de l'éclairage et de l'extinction de la LED (comme dans la démo d'Asthrolab) ;
 - Une période de scintillement aléatoire ;
 - Une très faible consommation électrique du contrôleur (en utilisant les fonctions de mise en sommeil) ;
-- A faire : Utiliser la diode en capteur de luminosité pour ne faire briller la led que la nuit.
+- À faire : Utiliser la diode en capteur de luminosité pour ne faire briller la LED que la nuit.
 
 Pré-requis
 ----------
 Comme je n'ai plus rien pour coder et flasher le microcontrôleur, je vais m'appuyer sur un Arduino en mode ISP. Cela va me permettre d'utiliser :
 
 1. l'IDE de l'Arduino pour saisir et compiler mon code ;
-2. l'Arduino lui-même pour flasher le microcontroleur.
+2. l'Arduino lui-même pour flasher le microcontrôleur.
 
 Licence
 -------
