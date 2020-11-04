@@ -41,9 +41,12 @@ Fonctions
 
 Pré-requis
 ----------
-Comme je n'ai plus rien pour coder et flasher le microcontrôleur, je vais m'appuyer sur un arduino en mode ISP. Cela va me permettre d'utiliser :
+Comme je n'ai plus rien pour coder et flasher le microcontrôleur, je vais m'appuyer sur un Arduino en mode ISP. Cela va me permettre d'utiliser :
 
 1. l'IDE de l'Arduino pour saisir et compiler mon code ;
 2. l'Arduino lui-même pour flasher le microcontroleur.
 
+Licence
+-------
+La seconde itération de ce code est placé sous licence Apache V2 (sauf indication contraire).
 
