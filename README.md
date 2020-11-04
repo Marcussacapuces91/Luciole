@@ -1,5 +1,5 @@
-Luciole
-=======
+Luciole (V2)
+============
 
 Projet de luciole basé sur plusieurs projets dont une démo de <a href='https://twitter.com/asthrolab'>@asthrolab</a> rencontré à l'<a href='http://asthrolab.fr/2013/12/retour-sur-lopenbidouillecamp-2013-montreuil/'>OpenBidouilleCamp de Montreuil</a> (déc. 2013).
 
@@ -15,19 +15,16 @@ Matériel
 Je pars sur un micro-controleur Atmel Tiny 13 ou supérieur suivant les approvisionnements (le Tiny13 est en fin de vie), une diode électroluminescente, une pile et... rien d'autre.
 
 <pre>
-           .  .
-          /|\/|\  
-           |  |
-    vcc   | \ |                               vcc
-     +----+---+-----+                          |
-     |    | / |     |                       -------
-     |              |                        #####    Pile (3v)
-  +--+----+----+----+--+                       |     CR2023
-  |                    |                    -------
-   ) AtTiny 13/../85   |                     #####
-  |.                   |                       |
-  +--+----+----+----+--+                      gnd    
-                    |   
+                                                 vcc
+                                                  |
+    vcc                                        -------
+     |              +-------+                   #####    Pile (3v)
+  +--+----+----+----+--+    |                     |     CR2023
+  |                    |  --+--                -------
+   ) AtTiny 13/../85   |   \ /  ---->           #####
+  |.                   |   -+-  ---->             |
+  +--+----+----+----+--+    |                    gnd    
+                    +-------+
                    gnd
 </pre>
 
