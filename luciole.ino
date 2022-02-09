@@ -18,7 +18,15 @@
 
 #include "Luciole.h"
 
-Luciole app;
+#if defined(__AVR_ATtiny13A__)
+Luciole<AVR_ATtiny13A> app;
+#elif defined(__AVR_ATtiny85__)
+Luciole<AVR_ATtiny85> app;
+#elif defined(__AVR_ATmega328P__)
+Luciole<AVR_ATmega328P> app;
+#else
+#error Processeur non pris en charge
+#endif
 
 /**
  * Interruption du watchdog.
