@@ -32,7 +32,7 @@ Fonctions
 - Une variation lente de l'éclairage et de l'extinction de la LED (comme dans la démo d'Asthrolab) ;
 - Une période de scintillement aléatoire ;
 - Une très faible consommation électrique du contrôleur (en utilisant les fonctions de mise en sommeil) ;
-- À faire : Utiliser la diode en capteur de luminosité pour ne faire briller la LED que la nuit.
+- Utiliser aussi la diode en capteur de luminosité pour ne faire briller la LED que la nuit.
 
 Pré-requis
 ----------
@@ -40,6 +40,8 @@ Comme je n'ai plus rien pour coder et flasher le microcontrôleur, je vais m'app
 
 1. l'IDE de l'Arduino pour saisir et compiler mon code ;
 2. l'Arduino lui-même pour flasher le microcontrôleur.
+
+https://github.com/ArminJo/micronucleus-firmware
 
 Licence
 -------
